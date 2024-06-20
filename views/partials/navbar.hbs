@@ -42,15 +42,24 @@
           >Add</a>
         {{/if}}
         <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-primary">
-            <a href="/login" class="text-white text-decoration-none">Login</a>
-          </button>
-          <button type="button" class="btn btn-success">
-            <a
-              href="/register"
-              class="text-white text-decoration-none"
-            >Register</a>
-          </button>
+          {{#if token}}
+            <button type="button" class="btn btn-danger">
+              <a
+                href="/logout"
+                class="text-white text-decoration-none"
+              >Logout</a>
+            </button>
+          {{else}}
+            <button type="button" class="btn btn-primary">
+              <a href="/login" class="text-white text-decoration-none">Login</a>
+            </button>
+            <button type="button" class="btn btn-success">
+              <a
+                href="/register"
+                class="text-white text-decoration-none"
+              >Register</a>
+            </button>
+          {{/if}}
         </div>
       </nav>
     </div>

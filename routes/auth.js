@@ -6,6 +6,9 @@ import { generateJWTToken } from "../services/token.js";
 
 // RENDER AUTHS
 router.get("/login", (req, res) => {
+  if (req.cookies.token) {
+    return res.redirect("/");
+  }
   res.render("login", {
     title: "Login",
     isLogin: true,
@@ -14,6 +17,9 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/register", (req, res) => {
+  if (req.cookies.token) {
+    return res.redirect("/");
+  }
   res.render("register", {
     title: "Register",
     isRegister: true,
@@ -22,6 +28,12 @@ router.get("/register", (req, res) => {
 });
 
 // POST AUTHS
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  return res.redirect("/login");
+});
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
