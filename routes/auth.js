@@ -2,10 +2,14 @@ import { Router } from "express";
 const router = Router();
 
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", {
+    title: "Login",
+  });
 });
 
 router.get("/register", (req, res) => {
-  res.render("register");
+  res.render("register", {
+    title: "Register",
+  });
 });
 export default router;
