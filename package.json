@@ -1,0 +1,24 @@
+{
+  "name": "vanilla_express_app",
+  "version": "1.0.0",
+  "description": "using handlebars, build vanilla express app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "Expressjs",
+    "nodejs"
+  ],
+  "author": "Sukhrob Abdullaev",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.3"
+  }
+}
