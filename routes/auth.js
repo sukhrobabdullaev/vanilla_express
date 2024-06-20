@@ -7,28 +7,40 @@ import bcrypt from "bcrypt";
 router.get("/login", (req, res) => {
   res.render("login", {
     title: "Login",
+    isLogin: true,
+    loginError: req.flash("loginError"),
   });
 });
 
 router.get("/register", (req, res) => {
   res.render("register", {
     title: "Register",
+    isRegister: true,
+    registerError: req.flash("registerError"),
   });
 });
 
 // POST AUTHS
 router.post("/login", async (req, res) => {
-  const existUser = await User.findOne({ email: req.body.email });
-  if (!existUser) {
-    console.log("USER NOT FOUND");
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    req.flash("loginError", "All fields is required!");
+    res.redirect("/login");
     return;
   }
-  const isPassEqual = await bcrypt.compare(
-    req.body.password,
-    existUser.password
-  );
+  const existUser = await User.findOne({ email });
+  if (!existUser) {
+    // console.log("USER NOT FOUND");
+    req.flash("loginError", "User not found!");
+    res.redirect("/login");
+    return;
+  }
+  const isPassEqual = await bcrypt.compare(password, existUser.password);
   if (!isPassEqual) {
-    console.log("PASSWORD WRONG");
+    // console.log("PASSWORD WRONG");
+    req.flash("loginError", "Password wrong!");
+    res.redirect("/login");
     return;
   }
 
@@ -37,12 +49,25 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const { firstname, lastname, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
   try {
     const userData = {
       ...req.body,
       password: hashedPassword,
     };
+    if (!firstname || !lastname || !email || !password) {
+      req.flash("registerError", "All fields is required!");
+      res.redirect("/register");
+      return;
+    }
+    const existUser = await User.findOne({ email });
+    if (existUser) {
+      req.flash("registerError", "Your Email is already taken!");
+      res.redirect("/register");
+      return;
+    }
+
     const user = await User.create(userData);
     console.log(user);
     res.status(201).json(user);
